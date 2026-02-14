@@ -24,7 +24,7 @@ async function login(){
     const error=document.getElementById("error");
 
 
-    const res =await fetch("http://localhost:5000/login",{
+    const res =await fetch("https://cafe-backend-yy7e.onrender.com/login",{
         method:"POST",
         headers: {"content-Type":"application/json"},
         body:JSON.stringify({
