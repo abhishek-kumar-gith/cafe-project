@@ -34,7 +34,7 @@ const ALL_STATUSES = [
 ];
 
 
-// loadOrders();
+loadOrders();
 
 // // Auto refresh order status every 5 seconds
 setInterval(() => {
