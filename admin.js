@@ -8,7 +8,7 @@ if(!localStorage.getItem("adminToken")){
 
 
 async function loadOrders() {
-    const res = await fetch("http://localhost:5000/orders");
+    const res = await fetch("https://cafe-backend-yy7e.onrender.com/orders");
     const data = await res.json();
 
     if (!data.success) return;
@@ -164,7 +164,7 @@ async function updateStatus(orderId, status) {
     const token = localStorage.getItem("adminToken");
 
     const res = await fetch(
-        `http://localhost:5000/orders/${orderId}/status`,
+        `https://cafe-backend-yy7e.onrender.com/orders/${orderId}/status`,
         {
             method: "PATCH",
             headers: {
