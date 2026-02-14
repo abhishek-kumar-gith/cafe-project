@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cafe Club</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="logo">☕ Cafe Club</div>
+      <nav class="nav">
+        <a href="#home">Home</a>
+        <a href="#menu">Menu</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="#"> Cart <span class="cart-count">0</span> </a>
+       <a href="admin_loginPage.html" target="_blank">
+  Admin Dashboard
+</a>
+
+
+
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1>Welcome to Cafe Club</h1>
+        <p>Fresh Coffee | Cozy Vibes | Great Taste</p>
+        <button class="orderNow">Order Now</button>
+      </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="menu" id="menu">
+      <h2>Our Menu</h2>
+
+      <div class="menu-items"></div>
+      <p class="menu-status"></p>
+      <div class="menu-status">
+        <div class="spinner"></div>
+      </div>
+
+      <div class="order-total">
+        <!-- JS will render total quantity & price here -->
+      </div>
+      <button class="clear-cart">Clear Cart</button>
+      <br />
+      <br />
+      <button class="checkout-btn">Place Order</button>
+      <p class="checkout-status"></p>
+    </section>
+    <input
+      type="text"
+      class="order-search"
+      placeholder="Search by name or phone"
+    />
+
+    <section class="order-history">
+      <h2>Order History</h2>
+      <div class="order-history-list"></div>
+      <div class="order-details hidden">
+        <h3>Order Details</h3>
+        <div class="order-details-content"></div>
+        <div class="order-actions">
+          <button data-status="PREPARING">Preparing</button>
+          <button data-status="READY">Ready</button>
+          <button data-status="COMPLETED">Completed</button>
+          <button data-status="CANCELLED">Cancel</button>
+        </div>
+        <button class="close-order-details">Close</button>
+      </div>
+    </section>
+    <div class="order-filters">
+      <button data-filter="ALL">All</button>
+      <button data-filter="PENDING">Pending</button>
+      <button data-filter="PREPARING">Preparing</button>
+      <button data-filter="READY">Ready</button>
+      <button data-filter="COMPLETED">Completed</button>
+      <button data-filter="CANCELLED">Cancelled</button>
+    </div>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+      <h2>About Us</h2>
+      <p>
+        Cafe Club is a perfect place to relax, work, and enjoy premium coffee.
+        We believe in quality, comfort, and creating memorable moments.
+      </p>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+      <h2>Contact Us</h2>
+      <p>Email: cafeclub@email.com</p>
+      <p>Phone: +91 8877998483</p>
+    </section>
+
+    <!-- Checkout Modal -->
+    <div class="checkout-modal hidden">
+      <div class="checkout-box">
+        <h2>Checkout</h2>
+
+        <label>
+          Name
+          <input type="text" class="customer-name" />
+        </label>
+
+        <label>
+          Phone
+          <input type="text" class="customer-phone" />
+        </label>
+
+        <label>
+          Address
+          <textarea class="customer-address"></textarea>
+        </label>
+
+        <p class="checkout-error"></p>
+
+        <div class="checkout-actions">
+          <button class="cancel-checkout">Cancel</button>
+          <button class="confirm-checkout">Place Order</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 Cafe Club | All Rights Reserved</p>
+    </footer>
+    <script src="./main.js" type="module"></script>
+  </body>
+</html>

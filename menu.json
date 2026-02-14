@@ -1,0 +1,21 @@
+[
+  {
+    "id": 1,
+    "name": "chai",
+    "description": "Fresh Indian Tea",
+    "price": 45
+  },
+
+  {
+    "id": 2,
+    "name": "coffee",
+    "description": "Hot browed coffee",
+    "price": 120
+  },
+  {
+    "id": 3,
+    "name": "Cold Coffee",
+    "description": "Chilled coffee with ice cream",
+    "price": 150
+  }
+]
