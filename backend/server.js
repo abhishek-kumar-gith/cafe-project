@@ -5,7 +5,7 @@ import {connectDB} from "./db.js";
 import Order from "./models/order.js";
 import dotenv from "dotenv";
 dotenv.config();
-
+import Razorpay from "razorpay";
 
 
 // const JWT_SECRET ="super_secret_key";
@@ -211,6 +211,36 @@ function verifyAdmin(req,res,next){
         return res.status(401).json({message:"Invalid token"});
     }
 }
+
+
+
+
+
+
+const razorpay = new Razorpay({
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET
+});
+
+app.post("/create-payment-order", async (req, res) => {
+
+    const { amount } = req.body;
+
+    try {
+        const options = {
+            amount: amount * 100,
+            currency: "INR",
+            receipt: "receipt_" + Date.now()
+        };
+
+        const order = await razorpay.orders.create(options);
+        res.json(order);
+
+    } catch (err) {
+        res.status(500).json({ message: "Payment creation failed" });
+    }
+});
+
 
 connectDB();
 

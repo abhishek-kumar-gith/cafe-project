@@ -24,12 +24,12 @@ const addressInput = document.querySelector(".customer-address");
 const checkoutError = document.querySelector(".checkout-error");
 const orderHistoryList = document.querySelector(".order-history");
 
-const filterButtons =document.querySelectorAll(".order-filters  button");
+const filterButtons = document.querySelectorAll(".order-filters  button");
 const searchInput = document.querySelector(".order-search");
 
 
-let allOrders=[];
-let currentFilter="ALL";
+let allOrders = [];
+let currentFilter = "ALL";
 
 let menuLoading = false;
 
@@ -181,7 +181,23 @@ cancelCheckoutBtn.addEventListener("click", () => {
 
 
 
-confirmCheckoutBtn.addEventListener("click", () => {
+// confirmCheckoutBtn.addEventListener("click", () => {
+//     const name = nameInput.value.trim();
+//     const phone = phoneInput.value.trim();
+//     const address = addressInput.value.trim();
+
+//     if (!name || !phone || !address) {
+//         checkoutError.textContent = "All fields are required";
+//         return;
+//     }
+
+//     checkoutError.textContent = "";
+//     placeOrder({ name, phone, address });
+// });
+
+
+confirmCheckoutBtn.addEventListener("click", async () => {
+
     const name = nameInput.value.trim();
     const phone = phoneInput.value.trim();
     const address = addressInput.value.trim();
@@ -192,7 +208,8 @@ confirmCheckoutBtn.addEventListener("click", () => {
     }
 
     checkoutError.textContent = "";
-    placeOrder({ name, phone, address });
+
+    startPayment({ name, phone, address });
 });
 
 
@@ -281,7 +298,7 @@ async function loadOrderHistory() {
 
         // renderOrderHistory(data.orders);
         allOrders = data.orders;
-       applyFilters();
+        applyFilters();
 
 
 
@@ -314,6 +331,81 @@ function applyFilters() {
 
     renderOrderHistory(filteredOrders);
 }
+
+async function startPayment(customer) {
+
+    const { quantity, totalPrice } = getCartTotals();
+
+    // 1️⃣ Create Razorpay order from backend
+    const response = await fetch("https://cafe-backend-yy7e.onrender.com/create-payment-order", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ amount: totalPrice })
+    });
+
+    const order = await response.json();
+
+    // 2️⃣ Razorpay popup
+    const options = {
+        key: "rzp_test_SGD2ql2rYssSHM",
+        amount: order.amount,
+        currency: "INR",
+        order_id: order.id,
+
+        handler: async function (paymentResponse) {
+
+            // 3️⃣ After payment success, verify and save order
+            await savePaidOrder(customer, paymentResponse);
+
+        }
+    };
+
+    const rzp = new Razorpay(options);
+    rzp.open();
+}
+
+
+
+
+async function savePaidOrder(customer, paymentResponse) {
+
+    const { quantity, totalPrice } = getCartTotals();
+
+    const orderData = {
+        customer,
+        items: cart.map(item => ({
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            subtotal: item.price * item.quantity
+        })),
+        summary: {
+            totalItems: quantity,
+            totalAmount: totalPrice
+        },
+        paymentId: paymentResponse.razorpay_payment_id
+    };
+
+    await fetch("https://cafe-backend-yy7e.onrender.com/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData)
+    });
+
+    clearCart();
+    clearSavedCart();
+    updateCartUI();
+    checkoutModal.classList.add("hidden");
+
+    alert("Payment Successful & Order Placed 🎉");
+
+    loadOrderHistory();
+}
+
+
+
 
 
 function renderOrderHistory(orders) {
